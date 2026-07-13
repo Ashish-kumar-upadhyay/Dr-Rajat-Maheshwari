@@ -76,13 +76,16 @@ function Index() {
             : "bg-transparent"
         }`}
       >
-        <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2 group">
-            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-brand to-accent grid place-items-center text-white shadow-md shadow-brand/25 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
-              <Stethoscope className="h-5 w-5" />
+        <div className="mx-auto max-w-7xl px-6 py-3.5 flex items-center justify-between">
+          <a href="#home" className="flex items-center gap-2.5 group">
+            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-brand to-accent grid place-items-center text-white shadow-md shadow-brand/25 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+              <Stethoscope className="h-[18px] w-[18px]" />
             </div>
-            <span className="font-semibold text-sm">Dr. Rajat Maheshwari</span>
-          </div>
+            <div className="leading-tight">
+              <div className="font-semibold text-[15px] text-foreground">Dr. Rajat Maheshwari</div>
+              <div className="text-[10.5px] text-muted-foreground tracking-[0.15em] uppercase">Vascular Surgeon</div>
+            </div>
+          </a>
           <nav className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
             {[
               ["Home", "#home"],
