@@ -58,6 +58,13 @@ const afternoonSlots = ["14:00", "14:30", "15:00", "15:30", "16:00", "16:30"];
 const eveningSlots = ["18:00", "18:30", "19:00", "19:30", "20:00"];
 const bookedSlots = new Set(["10:00", "15:30", "19:00"]);
 
+const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function formatShortDate(date: Date) {
+  return `${WEEKDAYS[date.getDay()]}, ${date.getDate()} ${MONTHS[date.getMonth()]}`;
+}
+
 function getNext14Days() {
   const days: { date: Date; label: string; day: number; weekday: string; iso: string }[] = [];
   const now = new Date();
@@ -66,9 +73,9 @@ function getNext14Days() {
     d.setDate(now.getDate() + i);
     days.push({
       date: d,
-      label: i === 0 ? "Today" : i === 1 ? "Tomorrow" : d.toLocaleDateString(undefined, { month: "short" }),
+      label: i === 0 ? "Today" : i === 1 ? "Tomorrow" : MONTHS[d.getMonth()],
       day: d.getDate(),
-      weekday: d.toLocaleDateString(undefined, { weekday: "short" }).toUpperCase(),
+      weekday: WEEKDAYS[d.getDay()].toUpperCase(),
       iso: d.toISOString().slice(0, 10),
     });
   }
@@ -94,7 +101,7 @@ function BookAppointment() {
   const canSubmit = form.name.trim().length > 1 && /^\d{10}$/.test(form.phone.replace(/\D/g, ""));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-soft via-white to-blue-50">
+    <div className="min-h-screen overflow-x-hidden bg-gradient-to-br from-brand-soft via-white to-blue-50">
       {/* Decorative blobs */}
       <div className="pointer-events-none fixed -right-40 -top-40 h-[500px] w-[500px] rounded-full bg-accent/15 blur-3xl animate-blob" />
       <div className="pointer-events-none fixed -left-32 bottom-0 h-[420px] w-[420px] rounded-full bg-brand/10 blur-3xl animate-blob" style={{ animationDelay: "-6s" }} />
@@ -164,7 +171,7 @@ function BookAppointment() {
 
         <div className="grid lg:grid-cols-[1.2fr_280px] gap-5">
           {/* LEFT: form card */}
-          <div className="bg-white/90 backdrop-blur rounded-3xl border border-border/70 shadow-[0_20px_60px_-25px_rgba(26,111,212,0.25)] p-6 md:p-8">
+          <div className="min-w-0 bg-white/90 backdrop-blur rounded-3xl border border-border/70 shadow-[0_20px_60px_-25px_rgba(26,111,212,0.25)] p-6 md:p-8">
             {submitted ? (
               <SuccessView
                 form={form}
@@ -416,7 +423,7 @@ function BookAppointment() {
                 <SummaryRow
                   icon={CalendarIcon}
                   label="Date"
-                  value={`${selectedDay.date.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })}`}
+                  value={formatShortDate(selectedDay.date)}
                 />
                 <SummaryRow icon={Clock} label="Time" value={slot ?? "Not selected"} muted={!slot} />
                 <SummaryRow icon={User} label="For" value={reason} />
@@ -561,7 +568,7 @@ function SuccessView({
       </p>
       <div className="max-w-sm mx-auto rounded-2xl border border-border/70 bg-gradient-to-br from-brand-soft to-white p-5 text-left space-y-2 text-sm">
         <div className="flex justify-between"><span className="text-muted-foreground">Type</span><span className="font-bold">{type.title}</span></div>
-        <div className="flex justify-between"><span className="text-muted-foreground">Date</span><span className="font-bold">{day.date.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })}</span></div>
+        <div className="flex justify-between"><span className="text-muted-foreground">Date</span><span className="font-bold">{formatShortDate(day.date)}</span></div>
         <div className="flex justify-between"><span className="text-muted-foreground">Time</span><span className="font-bold">{slot}</span></div>
         <div className="flex justify-between pt-2 border-t border-border/60"><span className="text-muted-foreground">Fee</span><span className="font-bold text-brand">{type.price}</span></div>
       </div>
