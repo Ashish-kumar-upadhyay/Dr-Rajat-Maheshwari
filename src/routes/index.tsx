@@ -69,6 +69,18 @@ function Index() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Show auth modal on first visit after 3 seconds
+  useEffect(() => {
+    const hasVisited = localStorage.getItem("hasVisited");
+    if (!hasVisited) {
+      const timer = setTimeout(() => {
+        window.dispatchEvent(new CustomEvent("open-auth-modal"));
+        localStorage.setItem("hasVisited", "true");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-white scroll-smooth">
       {/* NAV */}
@@ -179,6 +191,19 @@ function Index() {
                     {label}
                   </a>
                 ))}
+                <div className="border-t border-border mt-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      window.dispatchEvent(new CustomEvent("open-auth-modal"));
+                    }}
+                    className="text-sm text-foreground py-2 px-3 rounded-md hover:bg-brand-soft transition-colors flex items-center gap-2 w-full"
+                  >
+                    <User className="h-4 w-4" />
+                    Login / Sign Up
+                  </button>
+                </div>
               </nav>
             </div>
           )}
@@ -315,7 +340,16 @@ function Index() {
                 style={{ boxShadow: "0 25px 70px rgba(26, 111, 212, 0.20)", border: "1px solid rgba(26, 111, 212, 0.1)", animationDelay: "-2s" }}
               >
                 <div className="font-bold text-2xl bg-gradient-to-r from-brand to-accent bg-clip-text text-transparent leading-none">3+</div>
-                <div className="text-xs font-bold text-brand mt-1 tracking-wide">YEARS EXP.</div>
+                <div className="text-xs font-bold text-brand mt-1 tracking-wide">Years of Experience</div>
+              </div>
+
+              {/* 1000+ Procedures badge - bottom right */}
+              <div
+                className="absolute bottom-20 right-0 bg-white rounded-2xl px-4 py-3 z-30 text-center animate-float-slow hover:scale-105 transition-transform duration-300"
+                style={{ boxShadow: "0 25px 70px rgba(26, 111, 212, 0.20)", border: "1px solid rgba(26, 111, 212, 0.1)", animationDelay: "-5s" }}
+              >
+                <div className="font-bold text-xl bg-gradient-to-r from-brand to-accent bg-clip-text text-transparent leading-none">1000+</div>
+                <div className="text-[10px] font-bold text-brand mt-1 tracking-wide">Successful Procedures</div>
               </div>
             </div>
           </div>
@@ -425,25 +459,6 @@ function Index() {
                   <Mail className="h-4 w-4 text-brand" />
                 </div>
 
-                {/* Trusted by Patients card - top right */}
-                <div className="absolute top-4 right-0 z-20 bg-white rounded-xl shadow-lg px-3 py-2.5 flex items-center gap-2.5 animate-float hover:-translate-y-1 transition-transform" style={{ animationDelay: "-3s" }}>
-                  <div>
-                    <div className="flex gap-0.5">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-2.5 w-2.5 text-yellow-400 fill-yellow-400" />
-                      ))}
-                    </div>
-                    <div className="text-[10px] font-semibold text-foreground mt-0.5">Trusted by Patients</div>
-                  </div>
-                  <div className="flex -space-x-1.5">
-                    <div className="h-5 w-5 rounded-full bg-brand-soft border-2 border-white" />
-                    <div className="h-5 w-5 rounded-full bg-brand/40 border-2 border-white" />
-                  </div>
-                  <div className="h-6 w-6 rounded-full bg-brand grid place-items-center">
-                    <ArrowRight className="h-3 w-3 text-white" />
-                  </div>
-                </div>
-
                 {/* doctor image */}
                 <img
                   src={doctorImg}
@@ -456,6 +471,25 @@ function Index() {
                 <div className="absolute bottom-8 left-0 z-20 bg-gradient-to-br from-brand to-accent text-white rounded-2xl px-5 py-4 shadow-xl shadow-brand/40 text-center hover:scale-105 transition-transform">
                   <div className="text-2xl font-bold leading-none">3+</div>
                   <div className="text-xs mt-1 opacity-90 leading-tight">Years of<br />Experience</div>
+                </div>
+              </div>
+
+              {/* Trusted by Patients card - top right outside */}
+              <div className="absolute top-0 right-0 z-20 bg-white rounded-xl shadow-lg px-3 py-2.5 flex items-center gap-2.5 animate-float hover:-translate-y-1 transition-transform" style={{ animationDelay: "-3s" }}>
+                <div>
+                  <div className="flex gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-2.5 w-2.5 text-yellow-400 fill-yellow-400" />
+                    ))}
+                  </div>
+                  <div className="text-[10px] font-semibold text-foreground mt-0.5">Trusted by Patients</div>
+                </div>
+                <div className="flex -space-x-1.5">
+                  <img src="https://ui-avatars.com/api/?name=John+Doe&background=1a6fd4&color=fff&size=32" alt="Patient" className="h-5 w-5 rounded-full border-2 border-white object-cover" />
+                  <img src="https://ui-avatars.com/api/?name=Jane+Smith&background=2563eb&color=fff&size=32" alt="Patient" className="h-5 w-5 rounded-full border-2 border-white object-cover" />
+                </div>
+                <div className="h-6 w-6 rounded-full bg-brand grid place-items-center">
+                  <ArrowRight className="h-3 w-3 text-white" />
                 </div>
               </div>
             </div>
@@ -847,9 +881,9 @@ function Index() {
           <div className="mx-auto max-w-7xl px-6">
             <div className="text-center max-w-2xl mx-auto reveal">
               <div className="inline-block mb-3 px-4 py-1.5 bg-white border border-brand/15 rounded-full text-brand text-[11px] font-bold tracking-[0.2em]">
-                TESTIMONIALS
+                PATIENT FEEDBACK
               </div>
-              <h2 className="text-3xl lg:text-4xl font-bold">What Our <span className="bg-gradient-to-r from-brand to-accent bg-clip-text text-transparent">Clients Say</span></h2>
+              <h2 className="text-3xl lg:text-4xl font-bold">Patient <span className="bg-gradient-to-r from-brand to-accent bg-clip-text text-transparent">Feedback</span></h2>
               <p className="mt-3 text-muted-foreground text-sm">Real experiences from patients treated with dedicated vascular care.</p>
             </div>
             <div className="mt-12 grid md:grid-cols-3 gap-5">
@@ -860,7 +894,15 @@ function Index() {
                   style={{ transitionDelay: `${i * 100}ms` }}
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`h-10 w-10 rounded-full ${i === 1 ? "bg-white/20" : "bg-brand-soft"}`} />
+                    <img 
+                      src={[
+                        "https://randomuser.me/api/portraits/men/32.jpg",
+                        "https://randomuser.me/api/portraits/women/44.jpg",
+                        "https://randomuser.me/api/portraits/men/67.jpg"
+                      ][i]}
+                      alt={t.name}
+                      className={`h-10 w-10 rounded-full object-cover border-2 ${i === 1 ? "border-white/30" : "border-white shadow-md"}`}
+                    />
                     <div>
                       <div className="font-semibold text-sm">{t.name}</div>
                       <div className={`text-xs ${i === 1 ? "opacity-80" : "text-muted-foreground"}`}>{t.role}</div>
@@ -881,9 +923,9 @@ function Index() {
         {/* Mobile Testimonials */}
         <div className="md:hidden bg-background px-4 py-8">
           <div className="text-center mb-6">
-            <span className="text-brand text-xs font-medium tracking-widest uppercase">Testimonials</span>
+            <span className="text-brand text-xs font-medium tracking-widest uppercase">Patient Feedback</span>
             <h2 className="font-bold text-xl text-foreground mt-1">
-              Patient Success Stories
+              Patient Feedback
             </h2>
             <p className="text-muted-foreground text-xs mt-2">
               Real experiences from patients.
@@ -902,7 +944,15 @@ function Index() {
                 </div>
                 <p className={`text-xs leading-relaxed ${i === 1 ? "text-primary-foreground" : "text-muted-foreground"}`}>{t.text}</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <div className="h-8 w-8 rounded-full bg-brand-soft" />
+                  <img 
+                    src={[
+                      "https://randomuser.me/api/portraits/men/32.jpg",
+                      "https://randomuser.me/api/portraits/women/44.jpg",
+                      "https://randomuser.me/api/portraits/men/67.jpg"
+                    ][i]}
+                    alt={t.name}
+                    className="h-8 w-8 rounded-full object-cover border-2 border-white shadow-md"
+                  />
                   <div>
                     <div className="font-semibold text-xs text-foreground">{t.name}</div>
                     <div className={`text-xs ${i === 1 ? "opacity-60 text-primary-foreground" : "opacity-60 text-muted-foreground"}`}>Verified Patient</div>
