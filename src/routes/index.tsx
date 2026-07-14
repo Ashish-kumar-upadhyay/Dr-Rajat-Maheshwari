@@ -333,6 +333,12 @@ function Index() {
               className="w-full h-full object-cover object-top"
               alt="Dr. Rajat Maheshwari"
             />
+
+            {/* 3+ years badge - bottom left corner */}
+            <div className="absolute bottom-2 left-2 z-20 bg-gradient-to-br from-brand to-accent text-white rounded-lg px-2 py-1 shadow-md shadow-brand/40 text-center hover:scale-105 transition-transform">
+              <div className="text-sm font-bold leading-none">3+</div>
+              <div className="text-[8px] mt-0.5 opacity-90 leading-tight">Exp</div>
+            </div>
           </div>
 
           {/* Trusted by Patients badge - top right outside */}
@@ -352,12 +358,6 @@ function Index() {
             <div className="h-5 w-5 rounded-full bg-brand grid place-items-center">
               <ArrowRight className="h-2.5 w-2.5 text-white" />
             </div>
-          </div>
-
-          {/* 3+ years badge - bottom left outside */}
-          <div className="absolute top-36 left-8 z-20 bg-gradient-to-br from-brand to-accent text-white rounded-lg px-2 py-1 shadow-md shadow-brand/40 text-center hover:scale-105 transition-transform">
-            <div className="text-sm font-bold leading-none">3+</div>
-            <div className="text-[8px] mt-0.5 opacity-90 leading-tight">Exp</div>
           </div>
           <div className="relative z-10">
             <div className="inline-flex items-center gap-1.5 mb-2 px-3 py-1 bg-brand/10 rounded-full">
