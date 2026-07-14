@@ -262,17 +262,6 @@ export function AuthModal() {
                     <GoogleIcon />
                     Continue with Google
                   </button>
-
-                  <p className="pt-1 text-center text-sm text-slate-500">
-                    Don't have an account?{" "}
-                    <button
-                      type="button"
-                      onClick={() => setTab("signup")}
-                      className="font-semibold text-[#2563eb] hover:underline"
-                    >
-                      Sign Up
-                    </button>
-                  </p>
                 </div>
               </form>
             ) : (
@@ -371,17 +360,6 @@ export function AuthModal() {
                     <GoogleIcon />
                     Continue with Google
                   </button>
-
-                  <p className="pt-1 text-center text-sm text-slate-500">
-                    Already have an account?{" "}
-                    <button
-                      type="button"
-                      onClick={() => setTab("login")}
-                      className="font-semibold text-[#2563eb] hover:underline"
-                    >
-                      Login
-                    </button>
-                  </p>
                 </div>
               </form>
             )}
